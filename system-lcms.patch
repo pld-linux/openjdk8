@@ -1,7 +1,8 @@
-diff -durN -x '*.orig' jdk8u-jdk8u66-b02.orig/common/autoconf/libraries.m4 jdk8u-jdk8u66-b02/common/autoconf/libraries.m4
---- jdk8u-jdk8u66-b02.orig/common/autoconf/libraries.m4	2015-09-18 13:16:52.000000000 +0200
-+++ jdk8u-jdk8u66-b02/common/autoconf/libraries.m4	2015-09-18 13:18:24.000000000 +0200
-@@ -666,6 +666,46 @@
+# DP: taken from http://icedtea.classpath.org/wiki/IcedTea_Patches_for_OpenJDK_8
+
+--- a/common/autoconf/libraries.m4
++++ b/common/autoconf/libraries.m4
+@@ -845,6 +845,46 @@ AC_DEFUN_ONCE([LIB_SETUP_MISC_LIBS],
  
    ###############################################################################
    #
@@ -48,11 +49,10 @@ diff -durN -x '*.orig' jdk8u-jdk8u66-b02.orig/common/autoconf/libraries.m4 jdk8u
    # Check for the png library
    #
  
-diff -durN -x '*.orig' jdk8u-jdk8u66-b02.orig/jdk/make/lib/Awt2dLibraries.gmk jdk8u-jdk8u66-b02/jdk/make/lib/Awt2dLibraries.gmk
---- jdk8u-jdk8u66-b02.orig/jdk/make/lib/Awt2dLibraries.gmk	2015-09-18 13:16:52.000000000 +0200
-+++ jdk8u-jdk8u66-b02/jdk/make/lib/Awt2dLibraries.gmk	2015-09-18 13:18:24.000000000 +0200
-@@ -667,8 +667,8 @@
- ##########################################################################################
+--- a/jdk/make/lib/Awt2dLibraries.gmk
++++ b/jdk/make/lib/Awt2dLibraries.gmk
+@@ -666,8 +666,8 @@ ifeq ($(TOOLCHAIN_TYPE), clang)
+ endif
  
  # TODO: Update awt lib path when awt is converted
 -$(eval $(call SetupNativeCompilation,BUILD_LIBLCMS, \
@@ -62,7 +62,7 @@ diff -durN -x '*.orig' jdk8u-jdk8u66-b02.orig/jdk/make/lib/Awt2dLibraries.gmk jd
      OUTPUT_DIR := $(INSTALL_LIBRARIES_HERE), \
      SRC := $(JDK_TOPDIR)/src/share/native/sun/java2d/cmm/lcms, \
      LANG := C, \
-@@ -686,19 +686,19 @@
+@@ -686,19 +686,19 @@ $(eval $(call SetupNativeCompilation,BUI
      LDFLAGS_windows := $(WIN_AWT_LIB) $(WIN_JAVA_LIB), \
      LDFLAGS_SUFFIX_solaris := -lawt -ljava -ljvm -lc, \
      LDFLAGS_SUFFIX_macosx := $(LIBM) -lawt -ljava -ljvm, \
@@ -88,10 +88,9 @@ diff -durN -x '*.orig' jdk8u-jdk8u66-b02.orig/jdk/make/lib/Awt2dLibraries.gmk jd
  
  ##########################################################################################
  
-diff -durN -x '*.orig' jdk8u-jdk8u66-b02.orig/jdk/src/share/classes/sun/java2d/cmm/lcms/LCMS.java jdk8u-jdk8u66-b02/jdk/src/share/classes/sun/java2d/cmm/lcms/LCMS.java
---- jdk8u-jdk8u66-b02.orig/jdk/src/share/classes/sun/java2d/cmm/lcms/LCMS.java	2015-07-23 16:17:35.000000000 +0200
-+++ jdk8u-jdk8u66-b02/jdk/src/share/classes/sun/java2d/cmm/lcms/LCMS.java	2015-09-18 13:18:24.000000000 +0200
-@@ -207,7 +207,7 @@
+--- a/jdk/src/share/classes/sun/java2d/cmm/lcms/LCMS.java
++++ b/jdk/src/share/classes/sun/java2d/cmm/lcms/LCMS.java
+@@ -207,7 +207,7 @@ public class LCMS implements PCMM {
                           * disposer frameworks
                           */
                          System.loadLibrary("awt");

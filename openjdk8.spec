@@ -1,52 +1,47 @@
-#
-# NOTE:	versioning and release status might not be clear
-#	http://openjdk.java.net/projects/jdk8u/ gives some information
-#	about current status of the 'updates'
-#
-# TODO:
-#	- use other system libs (libsctp?)
-#	- include icedtea-sound?
-#	- consider zeroshark (LLVM-based JIT) for x32
-
-%bcond_with bootstrap   # build a bootstrap version, using icedtea6
-%bcond_without cacerts	# don't include the default CA certificates
+%bcond_with	bootstrap	# build a bootstrap version, using icedtea6
+%bcond_without	cacerts		# don't include the default CA certificates
 
 %if %{with bootstrap}
-%define		use_jdk	icedtea7
+%define		use_jdk	icedtea8
 %else
 %define		use_jdk	openjdk8
 %endif
 
+%ifarch %{ix86} %{x8664} sparc ppc64 ppc64le %{arm} aarch64
+%define		with_jfr	1
+%endif
+
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
-# JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.internal
 
-%define	ver_u	102
-%define	ver_b	14
+%define	ver_u	302
+
 Summary:	Open-source implementation of the Java Platform, Standard Edition
 Summary(pl.UTF-8):	Wolnoźródłowa implementacja Java 8 SE
 Name:		openjdk8
-Version:	8u%{ver_u}.b%{ver_b}
-Release:	2
+Version:	1.8.0.%{ver_u}
+Release:	1
+Epoch:		1
 License:	GPL v2
 Group:		Development/Languages/Java
-Source0:	%{name}-jdk8u%{ver_u}-b%{ver_b}.tar.bz2
-# Source0-md5:	04ecdce899eb3d6de9d5aadc438998c0
-Source1:	%{name}-corba-jdk8u%{ver_u}-b%{ver_b}.tar.bz2
-# Source1-md5:	6ea4a074a80d0ee4b6dcd50398835c49
-Source2:	%{name}-hotspot-jdk8u%{ver_u}-b%{ver_b}.tar.bz2
-# Source2-md5:	27b9e7e94fc6a47f452e8a94ba156395
-Source3:	%{name}-jaxp-jdk8u%{ver_u}-b%{ver_b}.tar.bz2
-# Source3-md5:	da82a91df3eb4c98ebaab4e71cbbcc4d
-Source4:	%{name}-jaxws-jdk8u%{ver_u}-b%{ver_b}.tar.bz2
-# Source4-md5:	8a91561bbc04f50a92032d82b78960e0
-Source5:	%{name}-jdk-jdk8u%{ver_u}-b%{ver_b}.tar.bz2
-# Source5-md5:	e65f6d029808a8b523e07d818c8ac9ad
-Source6:	%{name}-langtools-jdk8u%{ver_u}-b%{ver_b}.tar.bz2
-# Source6-md5:	61c645dbacfb925944f716ec50474821
-Source7:	%{name}-nashorn-jdk8u%{ver_u}-b%{ver_b}.tar.bz2
-# Source7-md5:	2c981235c1cbaba58197fd9b7ffd00e1
+Source0:	https://hg.openjdk.java.net/jdk8u/jdk8u/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-%{version}.tar.bz2
+# Source0-md5:	02c47e715966e341aec8d79655190310
+Source1:	https://hg.openjdk.java.net/jdk8u/jdk8u/corba/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-corba-%{version}.tar.bz2
+# Source1-md5:	5c11ab1b05ec1859a03212a90de49a6a
+Source2:	https://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-hotspot-%{version}.tar.bz2
+# Source2-md5:	091ed5f35e17cfe6e4da3ab4ae9b0049
+Source3:	https://hg.openjdk.java.net/jdk8u/jdk8u/jaxp/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-jaxp-%{version}.tar.bz2
+# Source3-md5:	cff4a3ece56aafccadbc693d1f51e89e
+Source4:	https://hg.openjdk.java.net/jdk8u/jdk8u/jaxws/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-jaxws-%{version}.tar.bz2
+# Source4-md5:	a3fa16f2308cc45db53baa49ef36750d
+Source5:	https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-jdk-%{version}.tar.bz2
+# Source5-md5:	2d004bb1211f486d88c31fa36ff6f9ee
+Source6:	https://hg.openjdk.java.net/jdk8u/jdk8u/langtools/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-langtools-%{version}.tar.bz2
+# Source6-md5:	243cb6b32a6ba0a973d04005355063e7
+Source7:	https://hg.openjdk.java.net/jdk8u/jdk8u/nashorn/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-nashorn-%{version}.tar.bz2
+# Source7-md5:	551965757732e1d64044d9d7e2b95063
+Source8:	https://hg.openjdk.java.net/aarch32-port/jdk8u/hotspot/archive/jdk8u%{ver_u}-ga-aarch32-20210726.tar.bz2?/%{name}-hotspot-aarch32-%{version}.tar.bz2
+# Source8-md5:	81871eb325f93615f507d6a32d43db39
 Source10:	make-cacerts.sh
 Patch0:		adjust-mflags.patch
 Patch1:		format_strings.patch
@@ -57,8 +52,9 @@ Patch5:		system-libpng.patch
 Patch6:		system-lcms.patch
 Patch7:		system-pcsclite.patch
 Patch8:		x32.patch
-Patch9:		protos.patch
-Patch10:	gcc6.patch
+Patch9:		gcc11.patch
+Patch10:	link-with-as-needed.patch
+Patch11:	aarch32.patch
 URL:		http://openjdk.java.net/
 BuildRequires:	/usr/bin/jar
 BuildRequires:	alsa-lib-devel
@@ -67,11 +63,12 @@ BuildRequires:	autoconf
 BuildRequires:	bash
 %{?with_cacerts:BuildRequires:	ca-certificates-update}
 BuildRequires:	cups-devel
+BuildRequires:	elfutils-devel
 BuildRequires:	freetype-devel >= 2.3
 BuildRequires:	gawk
 BuildRequires:	giflib-devel >= 5.1
 BuildRequires:	glibc-misc
-%{?buildrequires_jdk}
+%buildrequires_jdk
 BuildRequires:	lcms2-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
@@ -91,12 +88,13 @@ BuildRequires:	xorg-proto-printproto-devel
 BuildRequires:	xorg-proto-xproto-devel
 BuildRequires:	zip
 BuildRequires:	zlib-devel
-Requires:	%{name}-appletviewer = %{version}-%{release}
-Requires:	%{name}-jdk = %{version}-%{release}
+Requires:	%{name}-appletviewer = %{epoch}:%{version}-%{release}
+Requires:	%{name}-jdk = %{epoch}:%{version}-%{release}
 Suggests:	%{name}-jre-X11
 Suggests:	icedtea-web
 Obsoletes:	icedtea6
 Obsoletes:	icedtea7
+Obsoletes:	icedtea8
 Obsoletes:	java-gcj-compat
 Obsoletes:	java-gcj-compat-devel
 Obsoletes:	java-sun
@@ -134,6 +132,18 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %ifarch x32
 %define		jre_arch	x32
 %endif
+%ifarch aarch64
+%define		jre_arch	aarch64
+%endif
+%ifarch %{arm}
+%define		jre_arch	arm
+%endif
+
+%ifarch %{arm}
+%define		jvm_type	client
+%else
+%define		jvm_type	server
+%endif
 
 # to break artificial subpackage dependency loops
 %define		_noautoreq	'libmawt.so' java\\\\(ClassDataVersion\\\\)
@@ -156,15 +166,16 @@ wszystkie komponenty OpenJDK, w tym środowisko programistyczne
 Summary:	OpenJDK - software development kit
 Summary(pl.UTF-8):	OpenJDK - środowisko programistyczne
 Group:		Development/Languages/Java
-Requires:	%{name}-jar = %{version}-%{release}
-Requires:	%{name}-jdk-base = %{version}-%{release}
-Requires:	%{name}-jre = %{version}-%{release}
-Provides:	j2sdk = %{_jdkversion}
-Provides:	jdk = %{_jdkversion}
+Requires:	%{name}-jar = %{epoch}:%{version}-%{release}
+Requires:	%{name}-jdk-base = %{epoch}:%{version}-%{release}
+Requires:	%{name}-jre = %{epoch}:%{version}-%{release}
+Provides:	j2sdk = %{version}
+Provides:	jdk = %{version}
 Obsoletes:	blackdown-java-sdk
 Obsoletes:	ibm-java
 Obsoletes:	icedtea6-jdk
 Obsoletes:	icedtea7-jdk
+Obsoletes:	icedtea8-jdk
 Obsoletes:	java-blackdown
 Obsoletes:	java-gcj-compat-devel
 Obsoletes:	java-sun
@@ -188,8 +199,8 @@ OpenJDK staje się domyślnym JDK w systemie.
 Summary:	OpenJDK - software development kit
 Summary(pl.UTF-8):	Kod OpenJDK - środowisko programistyczne
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
-Requires:	jpackage-utils >= 0:1.7.5-7
+Requires:	%{name}-jre-base = %{epoch}:%{version}-%{release}
+Requires:	jpackage-utils >= 0:1.7.5-8
 Provides:	jdk(%{name})
 
 %description jdk-base
@@ -202,7 +213,7 @@ OpenJDK skompilowane wyłącznie przy użyciu wolnego oprogramowania.
 Summary:	OpenJDK - runtime environment
 Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
+Requires:	%{name}-jre-base = %{epoch}:%{version}-%{release}
 Requires:	nss >= 1:3.13.4
 # Require zoneinfo data provided by java-tzdata subpackage.
 Requires:	java-tzdata
@@ -219,22 +230,23 @@ Provides:	java(jmx) = 1.4
 Provides:	java(jndi) = %{version}
 Provides:	java(jsse) = %{version}
 Provides:	java1.4
-Provides:	jre = %{_jdkversion}
+Provides:	jre = %{version}
 Obsoletes:	icedtea6-jre
 Obsoletes:	icedtea7-jre
-Obsoletes:	java(jaas)
-Obsoletes:	java(jaf)
-Obsoletes:	java(jaxp)
-Obsoletes:	java(jce)
-Obsoletes:	java(jdbc-stdext)
-Obsoletes:	java(jdbc-stdext)
-Obsoletes:	java(jmx)
-Obsoletes:	java(jndi)
-Obsoletes:	java(jsse)
+Obsoletes:	icedtea8-jre
+Obsoletes:	jaas
+Obsoletes:	jaf
 Obsoletes:	java-gcj-compat
+Obsoletes:	java-jaxp
+Obsoletes:	java-jdbc-stdext
 Obsoletes:	java-sun-jre
 Obsoletes:	java5-sun-jre
+Obsoletes:	jce
+Obsoletes:	jdbc-stdext
+Obsoletes:	jmx
+Obsoletes:	jndi
 Obsoletes:	jre
+Obsoletes:	jsse
 Obsoletes:	oracle-java7-jre
 
 %description jre
@@ -252,11 +264,12 @@ sprawiając tym samym, że OpenJDK staje się domyślnym JRE w systemie.
 Summary:	OpenJDK - runtime environment - X11 support
 Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe - obsługa X11
 Group:		Development/Languages/Java
-Requires:	%{name}-jre = %{version}-%{release}
-Requires:	%{name}-jre-base-X11 = %{version}-%{release}
-Provides:	jre-X11 = %{_jdkversion}
+Requires:	%{name}-jre = %{epoch}:%{version}-%{release}
+Requires:	%{name}-jre-base-X11 = %{epoch}:%{version}-%{release}
+Provides:	jre-X11 = %{version}
 Obsoletes:	icedtea6-jre-X11
 Obsoletes:	icedtea7-jre-X11
+Obsoletes:	icedtea8-jre-X11
 Obsoletes:	java-sun-jre-X11
 Obsoletes:	oracle-java7-jre-X11
 
@@ -272,7 +285,7 @@ wolnego oprogramowania.
 Summary:	OpenJDK - runtime environment
 Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe
 Group:		Development/Languages/Java
-Requires:	jpackage-utils >= 0:1.7.5-7
+Requires:	jpackage-utils >= 0:1.7.5-8
 Provides:	jre(%{name})
 
 %description jre-base
@@ -286,8 +299,8 @@ wolnego oprogramowania.
 Summary:	OpenJDK - runtime environment - X11 support
 Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe - obsługa X11
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
-Requires:	%{name}-jre-base-freetype = %{version}-%{release}
+Requires:	%{name}-jre-base = %{epoch}:%{version}-%{release}
+Requires:	%{name}-jre-base-freetype = %{epoch}:%{version}-%{release}
 
 %description jre-base-X11
 X11 support for OpenJDK runtime environment built using free software
@@ -301,7 +314,7 @@ wolnego oprogramowania.
 Summary:	OpenJDK - runtime environment - ALSA support
 Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe - obsługa ALSA
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
+Requires:	%{name}-jre-base = %{epoch}:%{version}-%{release}
 
 %description jre-base-alsa
 ALSA sound support for OpenJDK runtime environment build using free
@@ -315,7 +328,7 @@ zbudowane przy uzyciu wyłącznie wolnego oprogramowania.
 Summary:	OpenJDK - runtime environment - font support
 Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe - obsługa fontów
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
+Requires:	%{name}-jre-base = %{epoch}:%{version}-%{release}
 
 %description jre-base-freetype
 Font handling library for OpenJDK runtime environment built using free
@@ -329,7 +342,7 @@ użyciu wolnego oprogramowania.
 Summary:	OpenJDK - runtime environment - GTK support
 Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe - obsługa GTK
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
+Requires:	%{name}-jre-base = %{epoch}:%{version}-%{release}
 
 %description jre-base-gtk
 GTK support for OpenJDK runtime environment.
@@ -341,11 +354,12 @@ Biblioteki GTK dla OpenJDK.
 Summary:	OpenJDK - JAR tool
 Summary(pl.UTF-8):	OpenJDK - narzędzie JAR
 Group:		Development/Languages/Java
-Requires:	%{name}-jdk-base = %{version}-%{release}
+Requires:	%{name}-jdk-base = %{epoch}:%{version}-%{release}
 Provides:	jar
 Obsoletes:	fastjar
 Obsoletes:	icedtea6-jar
 Obsoletes:	icedtea7-jar
+Obsoletes:	icedtea8-jar
 Obsoletes:	jar
 
 %description jar
@@ -365,10 +379,11 @@ archiwów.
 Summary:	OpenJDK - appletviewer tool
 Summary(pl.UTF-8):	OpenJDK - narzędzie appletviewer
 Group:		Development/Languages/Java
-Requires:	%{name}-jdk-base = %{version}-%{release}
-Requires:	%{name}-jre-X11 = %{version}-%{release}
+Requires:	%{name}-jdk-base = %{epoch}:%{version}-%{release}
+Requires:	%{name}-jre-X11 = %{epoch}:%{version}-%{release}
 Obsoletes:	icedtea6-appletviewer
 Obsoletes:	icedtea7-appletviewer
+Obsoletes:	icedtea8-appletviewer
 Obsoletes:	java-sun-appletviewer
 Obsoletes:	oracle-java7-appletviewer
 
@@ -406,10 +421,15 @@ Code examples for OpenJDK.
 Przykłady dla OpenJDK.
 
 %prep
-%setup -qn jdk8u-jdk8u%{ver_u}-b%{ver_b} -a1 -a2 -a3 -a4 -a5 -a6 -a7
+%setup -qn jdk8u-jdk8u%{ver_u}-ga -a1 -a3 -a4 -a5 -a6 -a7
+%ifarch %{arm}
+tar xf %{SOURCE8}
+%else
+tar xf %{SOURCE2}
+%endif
 
-for d in *-jdk8u*-b* ; do
-	mv "$d" "${d%%-jdk8u*-b*}"
+for d in *-jdk8u%{ver_u}-ga*; do
+	mv "$d" "${d%%-jdk8u%{ver_u}-ga*}"
 done
 
 %patch0 -p1
@@ -423,6 +443,9 @@ done
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%ifarch %{arm}
+%patch11 -p1
+%endif
 
 %build
 # Make sure we have /proc mounted - otherwise idlc will fail later.
@@ -431,19 +454,16 @@ if [ ! -f /proc/self/stat ]; then
 	exit 1
 fi
 
+unset JAVA_HOME
+unset CLASSPATH
+
+mkdir -p build-bin
+export PATH="$(pwd)/build-bin:$PATH"
+
 cd common/autoconf
 rm generated-configure.sh
 %{__autoconf} -o generated-configure.sh
 cd ../..
-
-mkdir -p build-bin
-
-# use the specified %%use_jdk
-export JAVA_HOME=%{java_home}
-export PATH="$JAVA_HOME/bin:$PATH"
-
-# unset CLASSPATH to be safe, gnustep puts garbage there, which openjdk hates
-unset CLASSPATH
 
 export SHELL=/bin/bash
 
@@ -454,16 +474,25 @@ chmod a+x configure
 %ifarch x32
 	--with-jvm-variants=zero \
 %endif
-	--with-extra-cflags="%{rpmcflags} -Wno-error=deprecated-declarations" \
-	--with-extra-cxxflags="%{rpmcxxflags} -Wno-error=deprecated-declarations" \
+	--with-boot-jdk="%{java_home}" \
+	--with-extra-cflags="%{rpmcppflags} %{rpmcflags}" \
+	--with-extra-cxxflags="%{rpmcppflags} %{rpmcxxflags}" \
 	--with-extra-ldflags="%{rpmldflags}" \
-	--disable-debug-symbols \
+	--with-native-debug-symbols=none \
+	--with-jobs="%{__jobs}" \
 	--with-giflib=system \
 	--with-libjpeg=system \
 	--with-libpng=system \
 	--with-lcms=system \
 	--with-libpcsclite=system \
-	--with-zlib=system
+	--with-zlib=system \
+	--with-update-version="%{ver_u}" \
+	--with-build-number="%{release}" \
+	--with-milestone="ga" \
+	--with-vendor-name="PLD-Linux" \
+	--with-vendor-url="https://www.pld-linux.org" \
+	--with-vendor-bug-url="https://bugs.pld-linux.org" \
+	--with-vendor-vm-bug-url="https://bugs.openjdk.java.net"
 
 specdir="$(dirname build/*-release/spec.gmk)"
 cat > $specdir/custom-spec.gmk <<EOF
@@ -472,8 +501,8 @@ SHELL=/bin/bash
 EOF
 [ -L tmp-bin ] || ln -s "$specdir/jdk/bin" tmp-bin
 
-%{__make} all \
-	-j1 JOBS=%{__jobs} \
+%{__make} -j1 all \
+	SCTP_WERROR= \
 	LOG=debug \
 	# these are normally set when --disable-debug-symbols is not used \
 	LIBMANAGEMENT_OPTIMIZATION=LOW \
@@ -483,7 +512,6 @@ EOF
 # smoke test
 tmp-bin/java -version
 
-export PATH="$(pwd)/build-bin:$PATH"
 %{?with_cacerts:%{__sh} %{SOURCE10}}
 
 %install
@@ -495,9 +523,11 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{dstdir},%{_mandir}/ja} \
 # install the 'JDK image', it contains the JRE too
 cp -a build/*-release/images/j2sdk-image/* $RPM_BUILD_ROOT%{dstdir}
 
+find $RPM_BUILD_ROOT%{dstdir} -name '*.diz' -delete
+
 # convenience symlinks without version number
 ln -s %{dstreldir} $RPM_BUILD_ROOT%{_jvmdir}/%{name}
-ln -s %{jrereldir} $RPM_BUILD_ROOT%{_jvmdir}/%{name}-jre
+ln -s %{dstreldir} $RPM_BUILD_ROOT%{_jvmdir}/%{name}-jre
 
 ln -s %{dstreldir} $RPM_BUILD_ROOT%{_jvmdir}/java
 
@@ -516,37 +546,16 @@ rmdir $RPM_BUILD_ROOT%{dstdir}/man
 # replace duplicates with symlinks, link to %{_bindir}
 for path in $RPM_BUILD_ROOT%{dstdir}/bin/*; do
 	filename=$(basename $path)
-	if diff -q "$path" "$RPM_BUILD_ROOT%{jredir}/bin/$filename" > /dev/null; then
-		ln -sf "../jre/bin/$filename" "$path"
-		ln -sf "%{jredir}/bin/$filename" $RPM_BUILD_ROOT%{_bindir}
-	else
-		ln -sf "%{dstdir}/bin/$filename" $RPM_BUILD_ROOT%{_bindir}
-	fi
+        ln -sf "%{dstdir}/bin/$filename" $RPM_BUILD_ROOT%{_bindir}
 done
-ln -sf ../jre/lib/jexec $RPM_BUILD_ROOT%{dstdir}/lib/jexec
 
 # keep configuration in %{_sysconfdir} (not all *.properties go there)
-for config in management security content-types.properties \
+for config in management security \
 		logging.properties net.properties sound.properties; do
 
 	mv $RPM_BUILD_ROOT%{jredir}/lib/$config $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/$config
 	ln -s %{_sysconfdir}/%{name}/$config $RPM_BUILD_ROOT%{jredir}/lib/$config
 done
-
-ln -sf %{jredir}/lib/jsse.jar $RPM_BUILD_ROOT%{jvmjardir}/jsse.jar
-ln -sf %{jredir}/lib/jsse.jar $RPM_BUILD_ROOT%{jvmjardir}/jcert.jar
-ln -sf %{jredir}/lib/jsse.jar $RPM_BUILD_ROOT%{jvmjardir}/jnet.jar
-ln -sf %{jredir}/lib/jce.jar $RPM_BUILD_ROOT%{jvmjardir}/jce.jar
-for f in jndi jndi-ldap jndi-cos jndi-rmi jaas jdbc-stdext jdbc-stdext-3.0 \
-	sasl jaxp_parser_impl jaxp_transform_impl jaxp jmx activation xml-commons-apis \
-	jndi-dns jndi-rmi; do
-	ln -sf %{jredir}/lib/rt.jar $RPM_BUILD_ROOT%{jvmjardir}/$f.jar
-done
-
-# some apps (like opera) looks for it in different place
-ln -s server/libjvm.so $RPM_BUILD_ROOT%{jredir}/lib/%{jre_arch}/libjvm.so
-
-%{__rm} $RPM_BUILD_ROOT%{dstdir}/{,jre/}{ASSEMBLY_EXCEPTION,LICENSE,THIRD_PARTY_README}
 
 %{?with_cacerts:install cacerts $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/security}
 
@@ -555,7 +564,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc THIRD_PARTY_README ASSEMBLY_EXCEPTION
+%doc README
 
 %files jdk
 %defattr(644,root,root,755)
@@ -573,6 +582,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/jdeps
 %attr(755,root,root) %{_bindir}/jhat
 %attr(755,root,root) %{_bindir}/jinfo
+%attr(755,root,root) %{_bindir}/jjs
 %attr(755,root,root) %{_bindir}/jmap
 %attr(755,root,root) %{_bindir}/jps
 %attr(755,root,root) %{_bindir}/jrunscript
@@ -587,7 +597,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/wsgen
 %attr(755,root,root) %{_bindir}/wsimport
 %attr(755,root,root) %{_bindir}/xjc
-%{_jvmdir}/java
 %{_mandir}/man1/extcheck.1*
 %{_mandir}/man1/idlj.1*
 %{_mandir}/man1/jarsigner.1*
@@ -601,6 +610,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/jdeps.1*
 %{_mandir}/man1/jhat.1*
 %{_mandir}/man1/jinfo.1*
+%{_mandir}/man1/jjs.1*
 %{_mandir}/man1/jmap.1*
 %{_mandir}/man1/jps.1*
 %{_mandir}/man1/jrunscript.1*
@@ -628,6 +638,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ja) %{_mandir}/ja/man1/jdeps.1*
 %lang(ja) %{_mandir}/ja/man1/jhat.1*
 %lang(ja) %{_mandir}/ja/man1/jinfo.1*
+%lang(ja) %{_mandir}/ja/man1/jjs.1*
 %lang(ja) %{_mandir}/ja/man1/jmap.1*
 %lang(ja) %{_mandir}/ja/man1/jps.1*
 %lang(ja) %{_mandir}/ja/man1/jrunscript.1*
@@ -649,6 +660,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc build/*-release/images/j2sdk-image/ASSEMBLY_EXCEPTION
 %dir %{dstdir}
 %{_jvmdir}/%{name}
+%dir %{dstdir}/bin
 %attr(755,root,root) %{dstdir}/bin/appletviewer
 %attr(755,root,root) %{dstdir}/bin/extcheck
 %attr(755,root,root) %{dstdir}/bin/idlj
@@ -687,18 +699,20 @@ rm -rf $RPM_BUILD_ROOT
 %{dstdir}/lib/jconsole.jar
 %attr(755,root,root) %{dstdir}/lib/jexec
 %{dstdir}/lib/orb.idl
-%ifnarch x32
+%ifnarch %{arm} x32
 %{dstdir}/lib/sa-jdi.jar
 %endif
 %{dstdir}/lib/tools.jar
 %dir %{dstdir}/lib/%{jre_arch}
 %dir %{dstdir}/lib/%{jre_arch}/jli
 %attr(755,root,root) %{dstdir}/lib/%{jre_arch}/jli/*.so
+%{?with_systemtap:%{dstdir}/tapset}
 
 %files jre
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/clhsdb
 %attr(755,root,root) %{_bindir}/java
-%attr(755,root,root) %{_bindir}/jjs
+%{?with_jfr:%attr(755,root,root) %{_bindir}/jfr}
 %attr(755,root,root) %{_bindir}/keytool
 %attr(755,root,root) %{_bindir}/orbd
 %attr(755,root,root) %{_bindir}/pack200
@@ -708,7 +722,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/tnameserv
 %attr(755,root,root) %{_bindir}/unpack200
 %{_mandir}/man1/java.1*
-%{_mandir}/man1/jjs.1*
 %{_mandir}/man1/keytool.1*
 %{_mandir}/man1/orbd.1*
 %{_mandir}/man1/pack200.1*
@@ -718,7 +731,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/tnameserv.1*
 %{_mandir}/man1/unpack200.1*
 %lang(ja) %{_mandir}/ja/man1/java.1*
-%lang(ja) %{_mandir}/ja/man1/jjs.1*
 %lang(ja) %{_mandir}/ja/man1/keytool.1*
 %lang(ja) %{_mandir}/ja/man1/orbd.1*
 %lang(ja) %{_mandir}/ja/man1/pack200.1*
@@ -727,11 +739,12 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ja) %{_mandir}/ja/man1/servertool.1*
 %lang(ja) %{_mandir}/ja/man1/tnameserv.1*
 %lang(ja) %{_mandir}/ja/man1/unpack200.1*
+%{_jvmdir}/java
 
 %files jre-base
 %defattr(644,root,root,755)
-%doc THIRD_PARTY_README
-%doc ASSEMBLY_EXCEPTION
+%doc build/*-release/images/j2sdk-image/jre/THIRD_PARTY_README
+%doc build/*-release/images/j2sdk-image/jre/ASSEMBLY_EXCEPTION
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*
 %dir %{dstdir}
@@ -740,8 +753,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_jvmdir}/%{name}-jre
 %dir %{jredir}/bin
 %dir %{dstdir}/bin
+%attr(755,root,root) %{dstdir}/bin/clhsdb
 %attr(755,root,root) %{jredir}/bin/java
 %attr(755,root,root) %{dstdir}/bin/java
+%{?with_jfr:%attr(755,root,root) %{dstdir}/bin/jfr}
 %attr(755,root,root) %{jredir}/bin/jjs
 %attr(755,root,root) %{dstdir}/bin/jjs
 %attr(755,root,root) %{jredir}/bin/keytool
@@ -764,12 +779,17 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{jredir}/lib/applet
 %{jredir}/lib/cmm
 %{jredir}/lib/ext
+%if %{with jfr}
+%{jredir}/lib/jfr.jar
+%dir %{jredir}/lib/jfr
+%{jredir}/lib/jfr/*.jfc
+%endif
 %dir %{jredir}/lib/%{jre_arch}
 %dir %{jredir}/lib/%{jre_arch}/jli
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/jli/*.so
-%dir %{jredir}/lib/%{jre_arch}/server
-%{jredir}/lib/%{jre_arch}/server/Xusage.txt
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/server/*.so
+%dir %{jredir}/lib/%{jre_arch}/%{jvm_type}
+%{jredir}/lib/%{jre_arch}/%{jvm_type}/Xusage.txt
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/%{jvm_type}/*.so
 %{jredir}/lib/%{jre_arch}/jvm.cfg
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libattach.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libawt.so
@@ -783,7 +803,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjaas_unix.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjava.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsctp.so
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsunec.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjava_crw_demo.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavajpeg.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavalcms.so
@@ -791,22 +810,24 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjsdt.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjsig.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjsound.so
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjvm.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libmanagement.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libmlib_image.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libnet.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libnio.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libnpt.so
-%ifnarch x32
+%ifnarch %{arm} x32
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsaproc.so
 %endif
-%{?with_sunec:%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsunec.so}
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsunec.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libunpack.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libverify.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libzip.so
 %{jredir}/lib/images
 %{jredir}/lib/management
 %{jredir}/lib/security
+%{jredir}/lib/hijrah-config-umalqura.properties
+%{jredir}/lib/tzdb.dat
+
 %if %{with webstart}
 %{jredir}/lib/about.jar
 %{jredir}/lib/about.jnlp
@@ -817,7 +838,6 @@ rm -rf $RPM_BUILD_ROOT
 %{jredir}/lib/content-types.properties
 %{jredir}/lib/currency.data
 %{jredir}/lib/flavormap.properties
-%{jredir}/lib/hijrah-config-umalqura.properties
 %{jredir}/lib/jce.jar
 %attr(755, root, root) %{jredir}/lib/jexec
 %{jredir}/lib/jsse.jar
@@ -831,23 +851,24 @@ rm -rf $RPM_BUILD_ROOT
 %{jredir}/lib/resources.jar
 %{jredir}/lib/rt.jar
 %{jredir}/lib/sound.properties
-%{jredir}/lib/tzdb.dat
 %{jvmjardir}
 
 %files jre-X11
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/hsdb
 %attr(755,root,root) %{_bindir}/policytool
 %{_mandir}/man1/policytool.1*
 %lang(ja) %{_mandir}/ja/man1/policytool.1*
 
 %files jre-base-X11
 %defattr(644,root,root,755)
+%attr(755,root,root) %{dstdir}/bin/hsdb
 %attr(755,root,root) %{jredir}/bin/policytool
 %attr(755,root,root) %{dstdir}/bin/policytool
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsplashscreen.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libawt_xawt.so
 %attr(755,root,root) %{dstdir}/lib/%{jre_arch}/libjawt.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjawt.so
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsplashscreen.so
 
 %files jre-base-alsa
 %defattr(644,root,root,755)
@@ -857,11 +878,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libfontmanager.so
 
-%if 0
 %files jre-base-gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavagtk.so
-%endif
 
 %files jar
 %defattr(644,root,root,755)
