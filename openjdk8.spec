@@ -55,6 +55,7 @@ Patch8:		x32.patch
 Patch9:		gcc11.patch
 Patch10:	link-with-as-needed.patch
 Patch11:	aarch32.patch
+Patch12:	atomic.patch
 URL:		http://openjdk.java.net/
 BuildRequires:	/usr/bin/jar
 BuildRequires:	alsa-lib-devel
@@ -70,6 +71,9 @@ BuildRequires:	giflib-devel >= 5.1
 BuildRequires:	glibc-misc
 %buildrequires_jdk
 BuildRequires:	lcms2-devel
+%ifarch %{arm}
+BuildRequires:	libatomic-devel
+%endif
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	lsb-release
@@ -445,6 +449,7 @@ done
 %patch10 -p1
 %ifarch %{arm}
 %patch11 -p1
+%patch12 -p1
 %endif
 
 %build

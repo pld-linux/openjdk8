@@ -1,0 +1,12 @@
+--- openjdk/hotspot/make/linux/makefiles/vm.make.orig	2021-01-06 14:05:49.577018554 +0100
++++ openjdk/hotspot/make/linux/makefiles/vm.make	2021-01-06 15:00:35.642849516 +0100
+@@ -297,6 +297,9 @@
+     LIBS_VM                += $(STATIC_STDCXX)
+   else
+     LIBS_VM                += -lstdc++
++    ifeq ($(BUILDARCH), aarch32)
++      LIBS_VM                += -latomic
++    endif
+   endif
+ 
+   LIBS_VM                  += $(LIBS)
