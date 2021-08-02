@@ -56,6 +56,7 @@ Patch9:		gcc11.patch
 Patch10:	link-with-as-needed.patch
 Patch11:	aarch32.patch
 Patch12:	atomic.patch
+Patch13:	hotspot-disable-werror.patch
 URL:		http://openjdk.java.net/
 BuildRequires:	/usr/bin/jar
 BuildRequires:	alsa-lib-devel
@@ -451,6 +452,7 @@ done
 %patch11 -p1
 %patch12 -p1
 %endif
+%patch13 -p1
 
 %build
 # Make sure we have /proc mounted - otherwise idlc will fail later.
