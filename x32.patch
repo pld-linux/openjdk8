@@ -78,3 +78,15 @@
  
    # Compile the C code into an executable.
    $(GENSRC_X11WRAPPERS_TMP)/sizer.%.exe: $(GENSRC_X11WRAPPERS_TMP)/sizer.%.c
+--- jdk8u-jdk8u302-ga/common/autoconf/flags.m4.orig	2021-06-28 20:48:48.000000000 +0200
++++ jdk8u-jdk8u302-ga/common/autoconf/flags.m4	2021-08-02 13:10:55.178538598 +0200
+@@ -905,6 +905,9 @@
+     s390)
+       ZERO_ARCHFLAG="${COMPILER_TARGET_BITS_FLAG}31"
+       ;;
++    x32)
++      ZERO_ARCHFLAG="${COMPILER_TARGET_BITS_FLAG}x32"
++      ;;
+     *)
+       ZERO_ARCHFLAG="${COMPILER_TARGET_BITS_FLAG}${OPENJDK_TARGET_CPU_BITS}"
+   esac
