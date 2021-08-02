@@ -1,47 +1,61 @@
-# DP: Add support for x32
-
---- a/common/autoconf/platform.m4
-+++ b/common/autoconf/platform.m4
-@@ -31,10 +31,17 @@ AC_DEFUN([PLATFORM_EXTRACT_VARS_FROM_CPU
-   # First argument is the cpu name from the trip/quad
-   case "$1" in
-     x86_64)
--      VAR_CPU=x86_64
--      VAR_CPU_ARCH=x86
--      VAR_CPU_BITS=64
--      VAR_CPU_ENDIAN=little
-+      if test "`dpkg-architecture -qDEB_HOST_ARCH`" = x32 ; then
-+        VAR_CPU=x32
-+        VAR_CPU_ARCH=x86
-+        VAR_CPU_BITS=32
-+        VAR_CPU_ENDIAN=little
-+      else
-+        VAR_CPU=x86_64
-+        VAR_CPU_ARCH=x86
-+        VAR_CPU_BITS=64
-+        VAR_CPU_ENDIAN=little
-+      fi
+--- jdk8u-jdk8u302-ga.orig/common/autoconf/platform.m4	2021-06-28 20:48:48.000000000 +0200
++++ jdk8u-jdk8u302-ga/common/autoconf/platform.m4	2021-08-02 11:32:31.464394497 +0200
+@@ -36,6 +36,12 @@
+       VAR_CPU_BITS=64
+       VAR_CPU_ENDIAN=little
        ;;
++    x32)
++      VAR_CPU=x32
++      VAR_CPU_ARCH=x86
++      VAR_CPU_BITS=32
++      VAR_CPU_ENDIAN=little
++      ;;
      i?86)
        VAR_CPU=x86
-@@ -451,7 +458,13 @@ AC_DEFUN([PLATFORM_SETUP_LEGACY_VARS],
-     ppc64)   ZERO_ARCHDEF=PPC64 ;;
+       VAR_CPU_ARCH=x86
+@@ -168,7 +174,14 @@
+ 
+   # Convert the autoconf OS/CPU value to our own data, into the VAR_OS/CPU variables.
+   PLATFORM_EXTRACT_VARS_FROM_OS($build_os)
+-  PLATFORM_EXTRACT_VARS_FROM_CPU($build_cpu)
++  case "$build" in
++    *x32)
++      PLATFORM_EXTRACT_VARS_FROM_CPU(x32)
++      ;;
++    *)
++      PLATFORM_EXTRACT_VARS_FROM_CPU($build_cpu)
++      ;;
++  esac
+   # ..and setup our own variables. (Do this explicitely to facilitate searching)
+   OPENJDK_BUILD_OS="$VAR_OS"
+   OPENJDK_BUILD_OS_API="$VAR_OS_API"
+@@ -190,7 +203,14 @@
+ 
+   # Convert the autoconf OS/CPU value to our own data, into the VAR_OS/CPU variables.
+   PLATFORM_EXTRACT_VARS_FROM_OS($host_os)
+-  PLATFORM_EXTRACT_VARS_FROM_CPU($host_cpu)
++  case "$host" in
++    *x32)
++      PLATFORM_EXTRACT_VARS_FROM_CPU(x32)
++      ;;
++    *)
++      PLATFORM_EXTRACT_VARS_FROM_CPU($host_cpu)
++      ;;
++  esac
+   # ... and setup our own variables. (Do this explicitely to facilitate searching)
+   OPENJDK_TARGET_OS="$VAR_OS"
+   OPENJDK_TARGET_OS_API="$VAR_OS_API"
+@@ -380,6 +400,7 @@
      s390*)   ZERO_ARCHDEF=S390  ;;
      sparc*)  ZERO_ARCHDEF=SPARC ;;
--    x86_64*) ZERO_ARCHDEF=AMD64 ;;
-+    x86_64*)
-+      if test "`dpkg-architecture -qDEB_HOST_ARCH`" = x32 ; then
-+        ZERO_ARCHDEF=X32
-+      else
-+        ZERO_ARCHDEF=AMD64
-+      fi
-+      ;;
+     x86_64*) ZERO_ARCHDEF=AMD64 ;;
++    x32*)    ZERO_ARCHDEF=X32   ;;
      x86)     ZERO_ARCHDEF=IA32  ;;
      *)      ZERO_ARCHDEF=$(echo "${OPENJDK_TARGET_CPU_LEGACY_LIB}" | tr a-z A-Z)
    esac
---- a/hotspot/src/os/linux/vm/os_linux.cpp
-+++ b/hotspot/src/os/linux/vm/os_linux.cpp
-@@ -1980,7 +1980,7 @@ void * os::dll_load(const char *filename
+--- jdk8u-jdk8u302-ga.orig/hotspot/src/os/linux/vm/os_linux.cpp	2021-08-02 11:19:04.106583145 +0200
++++ jdk8u-jdk8u302-ga/hotspot/src/os/linux/vm/os_linux.cpp	2021-08-02 11:20:22.825758333 +0200
+@@ -1980,7 +1980,7 @@
  
    #if  (defined IA32)
      static  Elf32_Half running_arch_code=EM_386;
@@ -50,9 +64,9 @@
      static  Elf32_Half running_arch_code=EM_X86_64;
    #elif  (defined IA64)
      static  Elf32_Half running_arch_code=EM_IA_64;
---- a/jdk/make/gensrc/GensrcX11Wrappers.gmk
-+++ b/jdk/make/gensrc/GensrcX11Wrappers.gmk
-@@ -91,9 +91,11 @@ ifneq ($(COMPILE_TYPE), cross)
+--- jdk8u-jdk8u302-ga.orig/jdk/make/gensrc/GensrcX11Wrappers.gmk	2021-03-31 19:24:20.000000000 +0200
++++ jdk8u-jdk8u302-ga/jdk/make/gensrc/GensrcX11Wrappers.gmk	2021-08-02 11:20:22.832424943 +0200
+@@ -87,9 +87,11 @@
  	$(TOOL_WRAPPERGENERATOR) $(@D) $(GENSRC_SIZER_DIR)/xlibtypes.txt "sizer" $*
  
    # use -m32/-m64 only if the compiler supports it
