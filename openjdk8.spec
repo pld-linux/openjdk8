@@ -14,7 +14,7 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 
-%define	ver_u	302
+%define	ver_u	312
 
 Summary:	Open-source implementation of the Java Platform, Standard Edition
 Summary(pl.UTF-8):	Wolnoźródłowa implementacja Java 8 SE
@@ -25,23 +25,23 @@ Epoch:		1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	https://hg.openjdk.java.net/jdk8u/jdk8u/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-%{version}.tar.bz2
-# Source0-md5:	02c47e715966e341aec8d79655190310
+# Source0-md5:	a44c9a3a7c5bca3860905c24ad21b449
 Source1:	https://hg.openjdk.java.net/jdk8u/jdk8u/corba/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-corba-%{version}.tar.bz2
-# Source1-md5:	5c11ab1b05ec1859a03212a90de49a6a
+# Source1-md5:	26b7d05ce243e7e4c2e9bcc106386b42
 Source2:	https://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-hotspot-%{version}.tar.bz2
-# Source2-md5:	091ed5f35e17cfe6e4da3ab4ae9b0049
+# Source2-md5:	9132b24a6a5cfdd0265f369367a60d71
 Source3:	https://hg.openjdk.java.net/jdk8u/jdk8u/jaxp/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-jaxp-%{version}.tar.bz2
-# Source3-md5:	cff4a3ece56aafccadbc693d1f51e89e
+# Source3-md5:	84bfc99cc384863e06e330fc1b04e048
 Source4:	https://hg.openjdk.java.net/jdk8u/jdk8u/jaxws/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-jaxws-%{version}.tar.bz2
-# Source4-md5:	a3fa16f2308cc45db53baa49ef36750d
+# Source4-md5:	e8ce03c81dc9f6252e412dc0f27ddbe0
 Source5:	https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-jdk-%{version}.tar.bz2
-# Source5-md5:	2d004bb1211f486d88c31fa36ff6f9ee
+# Source5-md5:	22147c9a4ecac8e1f6ea2af02480ebd5
 Source6:	https://hg.openjdk.java.net/jdk8u/jdk8u/langtools/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-langtools-%{version}.tar.bz2
-# Source6-md5:	243cb6b32a6ba0a973d04005355063e7
+# Source6-md5:	e93f4fa1d9221fe235d74dac0034d052
 Source7:	https://hg.openjdk.java.net/jdk8u/jdk8u/nashorn/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-nashorn-%{version}.tar.bz2
-# Source7-md5:	551965757732e1d64044d9d7e2b95063
-Source8:	https://hg.openjdk.java.net/aarch32-port/jdk8u/hotspot/archive/jdk8u%{ver_u}-ga-aarch32-20210726.tar.bz2?/%{name}-hotspot-aarch32-%{version}.tar.bz2
-# Source8-md5:	81871eb325f93615f507d6a32d43db39
+# Source7-md5:	70462a74254e22e14d4759c4af4fbc2d
+Source8:	https://hg.openjdk.java.net/aarch32-port/jdk8u/hotspot/archive/jdk8u%{ver_u}-b06-aarch32-20210923.tar.bz2?/%{name}-hotspot-aarch32-%{version}.tar.bz2
+# Source8-md5:	718e61ddf0d704495aea330433676848
 Source10:	make-cacerts.sh
 Patch0:		adjust-mflags.patch
 Patch1:		format_strings.patch
