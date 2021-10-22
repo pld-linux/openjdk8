@@ -433,8 +433,8 @@ tar xf %{SOURCE8}
 tar xf %{SOURCE2}
 %endif
 
-for d in *-jdk8u%{ver_u}-ga*; do
-	mv "$d" "${d%%-jdk8u%{ver_u}-ga*}"
+for d in *-jdk8u%{ver_u}-*; do
+	mv "$d" "${d%%-jdk8u%{ver_u}-*}"
 done
 
 %patch0 -p1
