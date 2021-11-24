@@ -1,0 +1,11 @@
+--- jdk8u-jdk8u312-ga/common/autoconf/boot-jdk.m4.orig	2021-09-14 01:27:07.000000000 +0200
++++ jdk8u-jdk8u312-ga/common/autoconf/boot-jdk.m4	2021-11-24 21:50:44.335912643 +0100
+@@ -51,7 +51,7 @@
+             BOOT_JDK_FOUND=no
+           else
+             # Oh, this is looking good! We probably have found a proper JDK. Is it the correct version?
+-            BOOT_JDK_VERSION=`"$BOOT_JDK/bin/java" -version 2>&1 | head -n 1`
++            BOOT_JDK_VERSION=`"$BOOT_JDK/bin/java" -version 2>&1 | grep -v _JAVA_OPTIONS | head -n 1`
+ 
+             # Extra M4 quote needed to protect [] in grep expression.
+             [FOUND_VERSION_78=`echo $BOOT_JDK_VERSION | grep  '\"1\.[78]\.'`]

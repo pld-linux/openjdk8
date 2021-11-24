@@ -57,6 +57,7 @@ Patch10:	link-with-as-needed.patch
 Patch11:	aarch32.patch
 Patch12:	atomic.patch
 Patch13:	hotspot-disable-werror.patch
+Patch14:	ignore-java-options.patch
 URL:		http://openjdk.java.net/
 BuildRequires:	/usr/bin/jar
 BuildRequires:	alsa-lib-devel
@@ -453,6 +454,7 @@ done
 %patch12 -p1
 %endif
 %patch13 -p1
+%patch14 -p1
 
 %build
 # Make sure we have /proc mounted - otherwise idlc will fail later.
@@ -463,6 +465,10 @@ fi
 
 unset JAVA_HOME
 unset CLASSPATH
+
+# force locking irrespective of cpu count determined based on /proc and /sys contents
+# https://lists.pld-linux.org/mailman/pipermail/pld-devel-en/2021-November/026415.html
+export _JAVA_OPTIONS=-XX:+AssumeMP
 
 mkdir -p build-bin
 export PATH="$(pwd)/build-bin:$PATH"
