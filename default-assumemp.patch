@@ -1,0 +1,11 @@
+--- jdk8u-jdk8u312-ga/hotspot/src/share/vm/runtime/globals.hpp.orig	2021-08-09 17:12:52.000000000 +0200
++++ jdk8u-jdk8u312-ga/hotspot/src/share/vm/runtime/globals.hpp	2021-11-24 22:08:41.933802463 +0100
+@@ -534,7 +534,7 @@
+   lp64_product(intx, ObjectAlignmentInBytes, 8,                             \
+           "Default object alignment in bytes, 8 is minimum")                \
+                                                                             \
+-  product(bool, AssumeMP, false,                                            \
++  product(bool, AssumeMP, true,                                             \
+           "Instruct the VM to assume multiple processors are available")    \
+                                                                             \
+   /* UseMembar is theoretically a temp flag used for memory barrier         \
