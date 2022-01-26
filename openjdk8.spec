@@ -516,7 +516,7 @@ SHELL=/bin/bash
 EOF
 [ -L tmp-bin ] || ln -s "$specdir/jdk/bin" tmp-bin
 
-%{__make} -j1 all \
+%{__make} -j1 images \
 	SCTP_WERROR= \
 	LOG=debug \
 	# these are normally set when --disable-debug-symbols is not used \
