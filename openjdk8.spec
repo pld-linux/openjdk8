@@ -14,35 +14,21 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 
-%define	ver_u	312
+%define	ver_u	322
 
 Summary:	Open-source implementation of the Java Platform, Standard Edition
 Summary(pl.UTF-8):	Wolnoźródłowa implementacja Java 8 SE
 Name:		openjdk8
 Version:	1.8.0.%{ver_u}
-Release:	2
+Release:	1
 Epoch:		1
 License:	GPL v2
 Group:		Development/Languages/Java
-Source0:	https://hg.openjdk.java.net/jdk8u/jdk8u/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-%{version}.tar.bz2
-# Source0-md5:	a44c9a3a7c5bca3860905c24ad21b449
-Source1:	https://hg.openjdk.java.net/jdk8u/jdk8u/corba/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-corba-%{version}.tar.bz2
-# Source1-md5:	26b7d05ce243e7e4c2e9bcc106386b42
-Source2:	https://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-hotspot-%{version}.tar.bz2
-# Source2-md5:	9132b24a6a5cfdd0265f369367a60d71
-Source3:	https://hg.openjdk.java.net/jdk8u/jdk8u/jaxp/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-jaxp-%{version}.tar.bz2
-# Source3-md5:	84bfc99cc384863e06e330fc1b04e048
-Source4:	https://hg.openjdk.java.net/jdk8u/jdk8u/jaxws/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-jaxws-%{version}.tar.bz2
-# Source4-md5:	e8ce03c81dc9f6252e412dc0f27ddbe0
-Source5:	https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-jdk-%{version}.tar.bz2
-# Source5-md5:	22147c9a4ecac8e1f6ea2af02480ebd5
-Source6:	https://hg.openjdk.java.net/jdk8u/jdk8u/langtools/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-langtools-%{version}.tar.bz2
-# Source6-md5:	e93f4fa1d9221fe235d74dac0034d052
-Source7:	https://hg.openjdk.java.net/jdk8u/jdk8u/nashorn/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-nashorn-%{version}.tar.bz2
-# Source7-md5:	70462a74254e22e14d4759c4af4fbc2d
-Source8:	https://hg.openjdk.java.net/aarch32-port/jdk8u/hotspot/archive/jdk8u%{ver_u}-b06-aarch32-20210923.tar.bz2?/%{name}-hotspot-aarch32-%{version}.tar.bz2
-# Source8-md5:	718e61ddf0d704495aea330433676848
-Source10:	make-cacerts.sh
+Source0:	https://hg.openjdk.java.net/jdk8u/monojdk8u/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-%{version}.tar.bz2
+# Source0-md5:	921ec6b97002cd68016641d372645b8d
+Source1:	https://hg.openjdk.java.net/aarch32-port/monojdk8u/archive/jdk8u%{ver_u}-ga-aarch32-20220131.tar.bz2?/%{name}-aarch32-%{version}.tar.bz2
+# Source1-md5:	4e7ef5cf5492cc8c591e548904490d40
+Source2:	make-cacerts.sh
 Patch0:		adjust-mflags.patch
 Patch1:		format_strings.patch
 Patch2:		CompileDemos.patch
@@ -54,7 +40,6 @@ Patch7:		system-pcsclite.patch
 Patch8:		x32.patch
 Patch9:		gcc11.patch
 Patch10:	link-with-as-needed.patch
-Patch11:	aarch32.patch
 Patch12:	atomic.patch
 Patch13:	hotspot-disable-werror.patch
 Patch14:	ignore-java-options.patch
@@ -143,7 +128,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		jre_arch	aarch64
 %endif
 %ifarch %{arm}
-%define		jre_arch	arm
+%define		jre_arch	aarch32
 %endif
 
 %ifarch %{arm}
@@ -428,16 +413,12 @@ Code examples for OpenJDK.
 Przykłady dla OpenJDK.
 
 %prep
-%setup -qn jdk8u-jdk8u%{ver_u}-ga -a1 -a3 -a4 -a5 -a6 -a7
+%setup -q -c -T
 %ifarch %{arm}
-tar xf %{SOURCE8}
+tar xf %{SOURCE1} --strip-components=1
 %else
-tar xf %{SOURCE2}
+tar xf %{SOURCE0} --strip-components=1
 %endif
-
-for d in *-jdk8u%{ver_u}-*; do
-	mv "$d" "${d%%-jdk8u%{ver_u}-*}"
-done
 
 %patch0 -p1
 %patch1 -p1
@@ -451,7 +432,6 @@ done
 %patch9 -p1
 %patch10 -p1
 %ifarch %{arm}
-%patch11 -p1
 %patch12 -p1
 %endif
 %patch13 -p1
@@ -488,6 +468,8 @@ chmod a+x configure
 %configure \
 %ifarch x32
 	--with-jvm-variants=zero \
+%else
+	--with-jvm-variants=%{jvm_type} \
 %endif
 	--with-boot-jdk="%{java_home}" \
 	--with-extra-cflags="%{rpmcppflags} %{rpmcflags}" \
@@ -527,7 +509,7 @@ EOF
 # smoke test
 tmp-bin/java -version
 
-%{?with_cacerts:%{__sh} %{SOURCE10}}
+%{?with_cacerts:%{__sh} %{SOURCE2}}
 
 %install
 rm -rf $RPM_BUILD_ROOT
