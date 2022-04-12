@@ -547,6 +547,8 @@ for path in $RPM_BUILD_ROOT%{dstdir}/bin/*; do
         ln -sf "%{dstdir}/bin/$filename" $RPM_BUILD_ROOT%{_bindir}
 done
 
+ln -sf  "%{jredir}/bin/java" $RPM_BUILD_ROOT%{_bindir}
+
 # keep configuration in %{_sysconfdir} (not all *.properties go there)
 for config in management security \
 		logging.properties net.properties sound.properties; do
