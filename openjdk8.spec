@@ -14,7 +14,7 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 
-%define	ver_u	332
+%define	ver_u	342
 
 Summary:	Open-source implementation of the Java Platform, Standard Edition
 Summary(pl.UTF-8):	Wolnoźródłowa implementacja Java 8 SE
@@ -24,10 +24,10 @@ Release:	1
 Epoch:		1
 License:	GPL v2
 Group:		Development/Languages/Java
-Source0:	https://hg.openjdk.java.net/jdk8u/monojdk8u/archive/jdk8u%{ver_u}-ga.tar.bz2?/%{name}-%{version}.tar.bz2
-# Source0-md5:	d8990567bfb9cc4c58d3ee77aef19ae6
-Source1:	https://hg.openjdk.java.net/aarch32-port/monojdk8u/archive/jdk8u%{ver_u}-ga-aarch32-20220422.tar.bz2?/%{name}-aarch32-%{version}.tar.bz2
-# Source1-md5:	0c7f361b704aba22b98465e2aa5ea176
+Source0:	https://github.com/openjdk/jdk8u/archive/jdk8u%{ver_u}-ga/%{name}-%{version}.tar.gz
+# Source0-md5:	70d50a2092b11a84bce3fab2a5a3f3f7
+Source1:	https://github.com/openjdk/aarch32-port-jdk8u/archive/jdk8u%{ver_u}-b07-aarch32-20220721/%{name}-aarch32-%{version}.tar.gz
+# Source1-md5:	2ad2cd89382cba09e18e5e7ca5db8f1a
 Source2:	make-cacerts.sh
 Patch0:		adjust-mflags.patch
 Patch1:		format_strings.patch
@@ -44,7 +44,6 @@ Patch12:	atomic.patch
 Patch13:	hotspot-disable-werror.patch
 Patch14:	ignore-java-options.patch
 Patch15:	default-assumemp.patch
-Patch16:	no-vcs.patch
 URL:		http://openjdk.java.net/
 BuildRequires:	/usr/bin/jar
 BuildRequires:	alsa-lib-devel
@@ -439,7 +438,6 @@ tar xf %{SOURCE0} --strip-components=1
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
-%patch16 -p1
 
 %build
 # Make sure we have /proc mounted - otherwise idlc will fail later.
