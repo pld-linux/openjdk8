@@ -53,6 +53,7 @@ BuildRequires:	bash
 %{?with_cacerts:BuildRequires:	ca-certificates-update}
 BuildRequires:	cups-devel
 BuildRequires:	elfutils-devel
+BuildRequires:	fontconfig-devel
 BuildRequires:	freetype-devel >= 2.3
 BuildRequires:	gawk
 BuildRequires:	giflib-devel >= 5.1
