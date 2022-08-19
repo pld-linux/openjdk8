@@ -1,9 +1,9 @@
-%bcond_with	bootstrap	# build a bootstrap version, using icedtea6
+#
+# Conditional build:
+%bcond_with	bootstrap	# build a bootstrap version, using default jdk (icedtea8, ocacle-java8 or so)
 %bcond_without	cacerts		# don't include the default CA certificates
 
-%if %{with bootstrap}
-%define		use_jdk	icedtea8
-%else
+%if %{without bootstrap}
 %define		use_jdk	openjdk8
 %endif
 
@@ -84,7 +84,7 @@ BuildRequires:	zip
 BuildRequires:	zlib-devel
 Requires:	%{name}-appletviewer = %{epoch}:%{version}-%{release}
 Requires:	%{name}-jdk = %{epoch}:%{version}-%{release}
-Suggests:	%{name}-jre-X11
+Suggests:	%{name}-jre-X11 = %{epoch}:%{version}-%{release}
 Suggests:	icedtea-web
 Obsoletes:	icedtea6
 Obsoletes:	icedtea7
@@ -109,6 +109,12 @@ Obsoletes:	oracle-java7-jre-X11
 Obsoletes:	oracle-java7-jre-alsa
 Obsoletes:	oracle-java7-jre-jdbc
 Obsoletes:	oracle-java7-tools
+Obsoletes:	oracle-java8
+Obsoletes:	oracle-java8-jre
+Obsoletes:	oracle-java8-jre-X11
+Obsoletes:	oracle-java8-jre-alsa
+Obsoletes:	oracle-java8-jre-jdbc
+Obsoletes:	oracle-java8-tools
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		dstreldir	%{name}-%{version}
@@ -177,6 +183,7 @@ Obsoletes:	java5-sun
 Obsoletes:	jdk
 Obsoletes:	kaffe
 Obsoletes:	oracle-java7
+Obsoletes:	oracle-java8
 
 %description jdk
 This package symlinks OpenJDK development tools provided by
@@ -242,6 +249,7 @@ Obsoletes:	jndi
 Obsoletes:	jre
 Obsoletes:	jsse
 Obsoletes:	oracle-java7-jre
+Obsoletes:	oracle-java8-jre
 
 %description jre
 This package symlinks OpenJDK runtime environment tools provided by
@@ -266,6 +274,7 @@ Obsoletes:	icedtea7-jre-X11
 Obsoletes:	icedtea8-jre-X11
 Obsoletes:	java-sun-jre-X11
 Obsoletes:	oracle-java7-jre-X11
+Obsoletes:	oracle-java8-jre-X11
 
 %description jre-X11
 X11 support for OpenJDK runtime environment built using free software
@@ -380,6 +389,7 @@ Obsoletes:	icedtea7-appletviewer
 Obsoletes:	icedtea8-appletviewer
 Obsoletes:	java-sun-appletviewer
 Obsoletes:	oracle-java7-appletviewer
+Obsoletes:	oracle-java8-appletviewer
 
 %description appletviewer
 Appletviewer from OpenJDK build using free software only.
@@ -657,8 +667,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files jdk-base
 %defattr(644,root,root,755)
-%doc build/*-release/images/j2sdk-image/THIRD_PARTY_README
-%doc build/*-release/images/j2sdk-image/ASSEMBLY_EXCEPTION
+%doc build/*-release/images/j2sdk-image/{ASSEMBLY_EXCEPTION,THIRD_PARTY_README}
 %dir %{dstdir}
 %{_jvmdir}/%{name}
 %dir %{dstdir}/bin
@@ -744,8 +753,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files jre-base
 %defattr(644,root,root,755)
-%doc build/*-release/images/j2sdk-image/jre/THIRD_PARTY_README
-%doc build/*-release/images/j2sdk-image/jre/ASSEMBLY_EXCEPTION
+%doc build/*-release/images/j2sdk-image/jre/{ASSEMBLY_EXCEPTION,THIRD_PARTY_README}
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*
 %dir %{dstdir}
