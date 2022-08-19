@@ -468,7 +468,7 @@ mkdir -p build-bin
 export PATH="$(pwd)/build-bin:$PATH"
 
 cd common/autoconf
-rm generated-configure.sh
+%{__rm} generated-configure.sh
 %{__autoconf} -o generated-configure.sh
 cd ../..
 
@@ -541,15 +541,15 @@ ln -s %{dstreldir} $RPM_BUILD_ROOT%{_jvmdir}/%{name}-jre
 ln -s %{dstreldir} $RPM_BUILD_ROOT%{_jvmdir}/java
 
 # move JDK sources and demo to %{_prefix}/src
-mv $RPM_BUILD_ROOT%{dstdir}/demo $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-mv $RPM_BUILD_ROOT%{dstdir}/sample $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-mv $RPM_BUILD_ROOT%{dstdir}/src.zip $RPM_BUILD_ROOT%{_javasrcdir}/%{name}-jdk.zip
+%{__mv} $RPM_BUILD_ROOT%{dstdir}/demo $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+%{__mv} $RPM_BUILD_ROOT%{dstdir}/sample $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+%{__mv} $RPM_BUILD_ROOT%{dstdir}/src.zip $RPM_BUILD_ROOT%{_javasrcdir}/%{name}-jdk.zip
 
 # move manual pages to its place
-mv $RPM_BUILD_ROOT%{dstdir}/man/ja_JP.UTF-8/man1 $RPM_BUILD_ROOT%{_mandir}/ja/man1
+%{__mv} $RPM_BUILD_ROOT%{dstdir}/man/ja_JP.UTF-8/man1 $RPM_BUILD_ROOT%{_mandir}/ja/man1
 rmdir $RPM_BUILD_ROOT%{dstdir}/man/ja_JP.UTF-8
-rm $RPM_BUILD_ROOT%{dstdir}/man/ja
-mv $RPM_BUILD_ROOT%{dstdir}/man/man1 $RPM_BUILD_ROOT%{_mandir}/man1
+%{__rm} $RPM_BUILD_ROOT%{dstdir}/man/ja
+%{__mv} $RPM_BUILD_ROOT%{dstdir}/man/man1 $RPM_BUILD_ROOT%{_mandir}/man1
 rmdir $RPM_BUILD_ROOT%{dstdir}/man
 
 # replace duplicates with symlinks, link to %{_bindir}
