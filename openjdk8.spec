@@ -555,10 +555,18 @@ rmdir $RPM_BUILD_ROOT%{dstdir}/man
 # replace duplicates with symlinks, link to %{_bindir}
 for path in $RPM_BUILD_ROOT%{dstdir}/bin/*; do
 	filename=$(basename $path)
-        ln -sf "%{dstdir}/bin/$filename" $RPM_BUILD_ROOT%{_bindir}
+	if [ -e "$RPM_BUILD_ROOT%{jredir}/bin/$filename" ] && [ ! -L "$RPM_BUILD_ROOT%{jredir}/bin/$filename" ]; then
+		%{__rm} "$path"
+		ln -s "%{jredir}/bin/$filename" "$path"
+	fi
+	ln -sf "%{dstdir}/bin/$filename" $RPM_BUILD_ROOT%{_bindir}
 done
 
 ln -sf  "%{jredir}/bin/java" $RPM_BUILD_ROOT%{_bindir}
+
+%{__rm} $RPM_BUILD_ROOT%{dstdir}/lib/%{jre_arch}/{libjawt.so,jli/libjli.so}
+ln -s "%{jredir}/lib/%{jre_arch}/jli/libjli.so" "$RPM_BUILD_ROOT%{dstdir}/lib/%{jre_arch}/jli"
+ln -s "%{jredir}/lib/%{jre_arch}/libjawt.so" "$RPM_BUILD_ROOT%{dstdir}/lib/%{jre_arch}"
 
 # keep configuration in %{_sysconfdir} (not all *.properties go there)
 for config in management security \
