@@ -290,6 +290,7 @@ Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe
 Group:		Development/Languages/Java
 Requires:	jpackage-utils >= 0:1.7.5-8
 Provides:	jre(%{name})
+Obsoletes:	openjdk8-jre-base-gtk < 1:1.8.0.392-2
 
 %description jre-base
 OpenJDK runtime environment built using free software only.
@@ -340,18 +341,6 @@ software only.
 %description jre-base-freetype -l pl.UTF-8
 Biblioteki obsługi czcionek dla OpenJDK zbudowane wyłącznie przy
 użyciu wolnego oprogramowania.
-
-%package jre-base-gtk
-Summary:	OpenJDK - runtime environment - GTK support
-Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe - obsługa GTK
-Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{epoch}:%{version}-%{release}
-
-%description jre-base-gtk
-GTK support for OpenJDK runtime environment.
-
-%description jre-base-gtk -l pl.UTF-8
-Biblioteki GTK dla OpenJDK.
 
 %package jar
 Summary:	OpenJDK - JAR tool
@@ -894,9 +883,6 @@ rm -rf $RPM_BUILD_ROOT
 %files jre-base-freetype
 %defattr(644,root,root,755)
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libfontmanager.so
-
-%files jre-base-gtk
-%defattr(644,root,root,755)
 
 %files jar
 %defattr(644,root,root,755)
