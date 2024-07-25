@@ -1,0 +1,23 @@
+--- openjdk8-1.8.0.422/jdk/src/share/bin/splashscreen_stubs.c.orig	2024-07-06 18:41:38.000000000 +0200
++++ openjdk8-1.8.0.422/jdk/src/share/bin/splashscreen_stubs.c	2024-07-25 23:08:23.008364372 +0200
+@@ -61,11 +61,11 @@
+ #define INVOKEV(name) _INVOKE(name, ,;)
+ 
+ int     DoSplashLoadMemory(void* pdata, int size) {
+-    INVOKE(SplashLoadMemory, NULL)(pdata, size);
++    INVOKE(SplashLoadMemory, 0)(pdata, size);
+ }
+ 
+ int     DoSplashLoadFile(const char* filename) {
+-    INVOKE(SplashLoadFile, NULL)(filename);
++    INVOKE(SplashLoadFile, 0)(filename);
+ }
+ 
+ void    DoSplashInit(void) {
+@@ -87,4 +87,4 @@
+ char*    DoSplashGetScaledImageName(const char* fileName, const char* jarName,
+                                     float* scaleFactor) {
+     INVOKE(SplashGetScaledImageName, NULL)(fileName, jarName, scaleFactor);
+-}
+\ No newline at end of file
++}

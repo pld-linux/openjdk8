@@ -14,7 +14,7 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 
-%define	ver_u	412
+%define	ver_u	422
 
 Summary:	Open-source implementation of the Java Platform, Standard Edition
 Summary(pl.UTF-8):	Wolnoźródłowa implementacja Java 8 SE
@@ -25,9 +25,9 @@ Epoch:		1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	https://github.com/openjdk/jdk8u/archive/jdk8u%{ver_u}-ga/%{name}-%{version}.tar.gz
-# Source0-md5:	64d9c62812e1d311bb9b0d01478dbbba
-Source1:	https://github.com/openjdk/aarch32-port-jdk8u/archive/jdk8u%{ver_u}-ga-aarch32-20240419/%{name}-aarch32-%{version}.tar.gz
-# Source1-md5:	4a017af0505fc4a72c28142c62914b43
+# Source0-md5:	ba704d6fd7433c936de2b8857ec65157
+Source1:	https://github.com/openjdk/aarch32-port-jdk8u/archive/jdk8u%{ver_u}-ga-aarch32-20240725/%{name}-aarch32-%{version}.tar.gz
+# Source1-md5:	1ca0d5fbd1d18bde4d03c54cd4ce36bf
 Source2:	make-cacerts.sh
 Patch0:		adjust-mflags.patch
 Patch1:		format_strings.patch
@@ -44,6 +44,7 @@ Patch12:	atomic.patch
 Patch13:	hotspot-disable-werror.patch
 Patch14:	ignore-java-options.patch
 Patch15:	default-assumemp.patch
+Patch16:	gcc14.patch
 URL:		http://openjdk.java.net/
 BuildRequires:	/usr/bin/jar
 BuildRequires:	alsa-lib-devel
@@ -438,6 +439,7 @@ tar xf %{SOURCE0} --strip-components=1
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
+%patch16 -p1
 
 %build
 # Make sure we have /proc mounted - otherwise idlc will fail later.
