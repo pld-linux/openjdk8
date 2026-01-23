@@ -14,7 +14,7 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 
-%define	ver_u	472
+%define	ver_u	482
 
 Summary:	Open-source implementation of the Java Platform, Standard Edition
 Summary(pl.UTF-8):	Wolnoźródłowa implementacja Java 8 SE
@@ -25,9 +25,9 @@ Epoch:		1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	https://github.com/openjdk/jdk8u/archive/jdk8u%{ver_u}-ga/%{name}-%{version}.tar.gz
-# Source0-md5:	38e04a095d9954f820be3f2685d90a45
-Source1:	https://github.com/openjdk/aarch32-port-jdk8u/archive/jdk8u%{ver_u}-ga-aarch32-20251022/%{name}-aarch32-%{version}.tar.gz
-# Source1-md5:	2ff3a1d0535e415094f843b4bf70c5aa
+# Source0-md5:	ba3cac6f37b2522265884f01abd8b1a2
+Source1:	https://github.com/openjdk/aarch32-port-jdk8u/archive/jdk8u%{ver_u}-ga-aarch32-20260122/%{name}-aarch32-%{version}.tar.gz
+# Source1-md5:	6c1fc1d37fa87bcb096e3ef9db1f569f
 Source2:	make-cacerts.sh
 Patch0:		adjust-mflags.patch
 Patch1:		format_strings.patch
@@ -45,8 +45,6 @@ Patch13:	hotspot-disable-werror.patch
 Patch14:	ignore-java-options.patch
 Patch15:	default-assumemp.patch
 Patch16:	gcc14.patch
-Patch17:	glibc-2.42.patch
-Patch18:	glibc-2.42-aarch32.patch
 URL:		http://openjdk.java.net/
 BuildRequires:	/usr/bin/jar
 BuildRequires:	alsa-lib-devel
@@ -439,10 +437,8 @@ tar xf %{SOURCE0} --strip-components=1
 %patch -P14 -p1
 %patch -P15 -p1
 %patch -P16 -p1
-%patch -P17 -p1
 %ifarch %{arm}
 %patch -P12 -p1
-%patch -P18 -p1
 %endif
 
 %build

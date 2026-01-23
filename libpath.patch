@@ -1,16 +1,23 @@
-diff -dur -x '*~' -x '*.orig' -x '*.rej' jdk8u-jdk8u66-b02.orig/hotspot/src/os/linux/vm/os_linux.cpp jdk8u-jdk8u66-b02/hotspot/src/os/linux/vm/os_linux.cpp
---- jdk8u-jdk8u66-b02.orig/hotspot/src/os/linux/vm/os_linux.cpp	2015-07-22 19:12:56.000000000 +0200
-+++ jdk8u-jdk8u66-b02/hotspot/src/os/linux/vm/os_linux.cpp	2015-09-18 12:54:54.000000000 +0200
-@@ -309,9 +309,9 @@
- //        ...
- //        7: The default directories, normally /lib and /usr/lib.
+--- openjdk8-1.8.0.482/hotspot/src/os/linux/vm/os_linux.cpp.orig	2026-01-14 05:15:56.000000000 +0100
++++ openjdk8-1.8.0.482/hotspot/src/os/linux/vm/os_linux.cpp	2026-01-23 13:38:09.073965118 +0100
+@@ -363,17 +363,10 @@
+   //        1: ...
+   //        ...
+   //        7: The default directories, normally /lib and /usr/lib.
 -#if defined(AMD64) || defined(_LP64) && (defined(SPARC) || defined(PPC) || defined(S390))
--#define DEFAULT_LIBPATH "/usr/lib64:/lib64:/lib:/usr/lib"
+-  #define DEFAULT_LIBPATH "/usr/lib64:/lib64:/lib:/usr/lib"
 +#if defined(AMD64) || defined(_LP64) && (defined(SPARC) || defined(PPC) || defined(S390)) || defined(AARCH64)
-+#define DEFAULT_LIBPATH "/usr/lib64/java:/usr/lib64:/lib64:/lib:/usr/lib"
++  #define DEFAULT_LIBPATH "/usr/lib64/java:/usr/lib64:/lib64:/lib:/usr/lib"
  #else
--#define DEFAULT_LIBPATH "/lib:/usr/lib"
-+#define DEFAULT_LIBPATH "/usr/lib/java:/lib:/usr/lib"
+-#if defined(AARCH64)
+-  // Use 32-bit locations first for AARCH64 (a 64-bit architecture), since some systems
+-  // might not adhere to the FHS and it would be a change in behaviour if we used
+-  // DEFAULT_LIBPATH of other 64-bit architectures which prefer the 64-bit paths.
+-  #define DEFAULT_LIBPATH "/lib:/usr/lib:/usr/lib64:/lib64"
+-#else
+-  #define DEFAULT_LIBPATH "/lib:/usr/lib"
+-#endif // AARCH64
++  #define DEFAULT_LIBPATH "/usr/lib/java:/lib:/usr/lib"
  #endif
  
  // Base path of extensions installed on the system.
