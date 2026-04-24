@@ -309,6 +309,8 @@ Group:		Development/Languages/Java
 Requires:	%{name}-jre-base = %{epoch}:%{version}-%{release}
 Requires:	%{name}-jre-base-freetype = %{epoch}:%{version}-%{release}
 Recommends:	%{name}-jre-X11 = %{epoch}:%{version}-%{release}
+Provides:	jre-X11 = %{epoch}:%{version}-%{release}
+Provides:	jre-X11(%{name})
 
 %description jre-base-X11
 X11 support for OpenJDK runtime environment built using free software
