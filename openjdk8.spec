@@ -311,7 +311,7 @@ Group:		Development/Languages/Java
 Requires:	%{name}-jre = %{epoch}:%{version}-%{release}
 Requires:	%{name}-jre-freetype = %{epoch}:%{version}-%{release}
 Recommends:	%{name}-default-jre-X11 = %{epoch}:%{version}-%{release}
-Provides:	jre-X11 = %{epoch}:%{version}-%{release}
+Provides:	jre-X11 = %{version}
 Provides:	jre-X11(%{name})
 Obsoletes:	openjdk8-jre-base-X11 < 1:1.8.0.492
 
