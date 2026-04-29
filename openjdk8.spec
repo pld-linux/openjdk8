@@ -166,8 +166,8 @@ wszystkie komponenty OpenJDK, w tym środowisko programistyczne
 Summary:	OpenJDK - software development kit
 Summary(pl.UTF-8):	OpenJDK - środowisko programistyczne
 Group:		Development/Languages/Java
+Requires:	%{name}-default-jar = %{epoch}:%{version}-%{release}
 Requires:	%{name}-default-jre = %{epoch}:%{version}-%{release}
-Requires:	%{name}-jar = %{epoch}:%{version}-%{release}
 Requires:	%{name}-jdk = %{epoch}:%{version}-%{release}
 Provides:	j2sdk = %{version}
 Provides:	jdk = %{version}
@@ -354,7 +354,7 @@ software only.
 Biblioteki obsługi czcionek dla OpenJDK zbudowane wyłącznie przy
 użyciu wolnego oprogramowania.
 
-%package jar
+%package default-jar
 Summary:	OpenJDK - JAR tool
 Summary(pl.UTF-8):	OpenJDK - narzędzie JAR
 Group:		Development/Languages/Java
@@ -365,13 +365,14 @@ Obsoletes:	icedtea6-jar
 Obsoletes:	icedtea7-jar
 Obsoletes:	icedtea8-jar
 Obsoletes:	jar
+Obsoletes:	openjdk8-jar < 1:1.8.0.492
 
-%description jar
+%description default-jar
 JAR tool from OpenJDK built using free software only.
 
 JAR is an archiver used to merge Java classes into a single library.
 
-%description jar -l pl.UTF-8
+%description default-jar -l pl.UTF-8
 Narzędzie jar z OpenJDK zbudowane przy uzyciu wyłącznie wolnego
 oprogramowania.
 
@@ -379,7 +380,7 @@ JAR jest narzędziem pozwalającym wykonywać podstawowe operacje na
 archiwach javy .jar takie jak na przykład tworzenie lub rozpakowywanie
 archiwów.
 
-%package appletviewer
+%package default-appletviewer
 Summary:	OpenJDK - appletviewer tool
 Summary(pl.UTF-8):	OpenJDK - narzędzie appletviewer
 Group:		Development/Languages/Java
@@ -389,13 +390,14 @@ Obsoletes:	icedtea6-appletviewer
 Obsoletes:	icedtea7-appletviewer
 Obsoletes:	icedtea8-appletviewer
 Obsoletes:	java-sun-appletviewer
+Obsoletes:	openjdk8-appletviewer < 1:1.8.0.492
 Obsoletes:	oracle-java7-appletviewer
 Obsoletes:	oracle-java8-appletviewer
 
-%description appletviewer
+%description default-appletviewer
 Appletviewer from OpenJDK build using free software only.
 
-%description appletviewer -l pl.UTF-8
+%description default-appletviewer -l pl.UTF-8
 Appletviewer pozwala uruchamiać aplety javy niezależnie od
 przeglądarki www. Ten appletviewer pochodzi z zestawu narzędzi OpenJDK
 i został zbudowany wyłącznie przy użyciu wolnego oprogramowania.
@@ -895,13 +897,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libfontmanager.so
 
-%files jar
+%files default-jar
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/jar
 %{_mandir}/man1/jar.1*
 %lang(ja) %{_mandir}/ja/man1/jar.1*
 
-%files appletviewer
+%files default-appletviewer
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/appletviewer
 %{_mandir}/man1/appletviewer.1*
