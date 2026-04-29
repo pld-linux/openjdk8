@@ -45,7 +45,6 @@ Patch13:	hotspot-disable-werror.patch
 Patch14:	ignore-java-options.patch
 Patch15:	default-assumemp.patch
 URL:		http://openjdk.java.net/
-BuildRequires:	/usr/bin/jar
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ant
 BuildRequires:	autoconf
