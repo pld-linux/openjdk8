@@ -83,8 +83,8 @@ BuildRequires:	xorg-proto-xproto-devel
 BuildRequires:	zip
 BuildRequires:	zlib-devel
 Requires:	%{name}-appletviewer = %{epoch}:%{version}-%{release}
-Requires:	%{name}-jdk = %{epoch}:%{version}-%{release}
-Suggests:	%{name}-jre-X11 = %{epoch}:%{version}-%{release}
+Requires:	%{name}-default-jdk = %{epoch}:%{version}-%{release}
+Suggests:	%{name}-default-jre-X11 = %{epoch}:%{version}-%{release}
 Suggests:	icedtea-web
 Obsoletes:	icedtea6
 Obsoletes:	icedtea7
@@ -256,7 +256,6 @@ sprawiając tym samym, że OpenJDK staje się domyślnym JRE w systemie.
 Summary:	OpenJDK - runtime environment - X11 support
 Summary(pl.UTF-8):	OpenJDK - środowisko uruchomieniowe - obsługa X11
 Group:		Development/Languages/Java
-Requires:	%{name}-jre = %{epoch}:%{version}-%{release}
 Requires:	%{name}-jre-X11 = %{epoch}:%{version}-%{release}
 Provides:	jre-X11 = %{version}
 Obsoletes:	icedtea6-jre-X11
