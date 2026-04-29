@@ -209,7 +209,7 @@ Obsoletes:	openjdk8-jdk-base < 1:1.8.0.492
 %description jdk
 OpenJDK development tools built using free software only.
 
-%description jdk
+%description jdk -l pl.UTF-8
 OpenJDK skompilowane wyłącznie przy użyciu wolnego oprogramowania.
 
 %package default-jre
@@ -300,7 +300,7 @@ Obsoletes:	openjdk8-jre-base-gtk < 1:1.8.0.392-2
 %description jre
 OpenJDK runtime environment built using free software only.
 
-%description jre
+%description jre -l pl.UTF-8
 Środowisko uruchomieniowe OpenJDK zbudowany wyłącznie przy użyciu
 wolnego oprogramowania.
 
