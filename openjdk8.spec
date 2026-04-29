@@ -81,7 +81,7 @@ BuildRequires:	xorg-proto-printproto-devel
 BuildRequires:	xorg-proto-xproto-devel
 BuildRequires:	zip
 BuildRequires:	zlib-devel
-Requires:	%{name}-appletviewer = %{epoch}:%{version}-%{release}
+Requires:	%{name}-default-appletviewer = %{epoch}:%{version}-%{release}
 Requires:	%{name}-default-jdk = %{epoch}:%{version}-%{release}
 Suggests:	%{name}-default-jre-X11 = %{epoch}:%{version}-%{release}
 Suggests:	icedtea-web
