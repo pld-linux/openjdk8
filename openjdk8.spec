@@ -14,7 +14,7 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 
-%define	ver_u	502
+%define	ver_u	504
 
 Summary:	Open-source implementation of the Java Platform, Standard Edition
 Summary(pl.UTF-8):	Wolnoźródłowa implementacja Java 8 SE
@@ -25,9 +25,9 @@ Epoch:		1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	https://github.com/openjdk/jdk8u/archive/jdk8u%{ver_u}-ga/%{name}-%{version}.tar.gz
-# Source0-md5:	33f461d45d9d90a0c89f3e448aa09f37
-Source1:	https://github.com/openjdk/aarch32-port-jdk8u/archive/jdk8u%{ver_u}-ga-aarch32-20260731/%{name}-aarch32-%{version}.tar.gz
-# Source1-md5:	84c6231779f0eb40c48b40feadcc92e5
+# Source0-md5:	1ca342bc14f01a40a8f8e4eaa9c8e5a5
+Source1:	https://github.com/openjdk/aarch32-port-jdk8u/archive/jdk8u%{ver_u}-ga-aarch32-20260819/%{name}-aarch32-%{version}.tar.gz
+# Source1-md5:	642cccc48d393776f1d51a4160f1fa75
 Source2:	make-cacerts.sh
 Patch0:		adjust-mflags.patch
 Patch1:		format_strings.patch
