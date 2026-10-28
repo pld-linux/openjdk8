@@ -20,7 +20,7 @@ Summary:	Open-source implementation of the Java Platform, Standard Edition
 Summary(pl.UTF-8):	Wolnoźródłowa implementacja Java 8 SE
 Name:		openjdk8
 Version:	1.8.0.%{ver_u}
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL v2
 Group:		Development/Languages/Java
@@ -44,11 +44,14 @@ Patch12:	atomic.patch
 Patch13:	hotspot-disable-werror.patch
 Patch14:	ignore-java-options.patch
 Patch15:	default-assumemp.patch
+Patch16:	openjdk-CVE-2026-114820.patch
+Patch17:	openjdk-CVE-2026-91403-blacklist.patch
 URL:		http://openjdk.java.net/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf
 BuildRequires:	bash
-%{?with_cacerts:BuildRequires:	ca-certificates-update}
+# cacerts is generated from it; 20260816-1 drops the compromised eMudhra roots (CVE-2026-114820)
+%{?with_cacerts:BuildRequires:	ca-certificates-update >= 20260816-1}
 BuildRequires:	cups-devel
 BuildRequires:	elfutils-devel
 BuildRequires:	fontconfig-devel
@@ -445,6 +448,8 @@ tar xf %{SOURCE0} --strip-components=1
 %patch -P13 -p1
 %patch -P14 -p1
 %patch -P15 -p1
+%patch -P16 -p1
+%patch -P17 -p1
 %ifarch %{arm}
 %patch -P12 -p1
 %endif
